@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import SearchForm from "./form/SearchForm";
+import { CardList } from "./Card/CardList";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { ListProvider } from "./ListContext";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ListProvider>
+      <Box>
+        <Grid container>
+          <Grid item xs={12} md={2}>
+            <SearchForm />
+          </Grid>
+          <Grid item xs={12} md={10}>
+            <CardList />
+          </Grid>
+        </Grid>
+      </Box>
+    </ListProvider>
   );
 }
 
