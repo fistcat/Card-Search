@@ -116,7 +116,7 @@ const ActionCard = (
             {name}
           </Typography>
           {effect.split("|").map((text) => (
-            <Typography variant="body3" color="text.secondary" component="div">
+            <Typography variant="body2" color="text.secondary" component="div">
               {text}
             </Typography>
           ))}
