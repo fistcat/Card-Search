@@ -115,9 +115,11 @@ const ActionCard = (
           <Typography gutterBottom variant="h6" component="div">
             {name}
           </Typography>
-          <Typography variant="body2" color="text.secondary" component="div">
-            {effect}
-          </Typography>
+          {effect.split("|").map((text) => (
+            <Typography variant="body3" color="text.secondary" component="div">
+              {text}
+            </Typography>
+          ))}
         </CardContent>
       </Box>
     </Card>

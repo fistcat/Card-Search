@@ -10,6 +10,7 @@ export const CardList = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [deck, setDeck] = useState({});
+  const [open, setOpen] = useState(false);
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
 
   const observer = useRef();
