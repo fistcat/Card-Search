@@ -3,13 +3,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, Box, IconButton } from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import RemoveOutline from "@mui/icons-material/RemoveOutlined";
+import AddOutlined from "@mui/icons-material/AddOutlined";
+import Delete from "@mui/icons-material/Delete";
 
-const ActionCard = (
-  { code, name, img, effect, count, setDeck, setTotal },
-  ref
-) => {
+const ActionCard = (props, ref) => {
+  const { code, name, img, imgSize, effect, count, setDeck, setTotal } = props;
+  const showEffect = props.showEffect;
   const handleCardAdded = () => {
     setDeck((preDeck) =>
       code in preDeck
@@ -42,17 +42,26 @@ const ActionCard = (
     }
   };
 
+  const handleCardDeleted = () => {
+    setDeck((preDeck) => {
+      delete preDeck[code];
+      return { ...preDeck };
+    });
+    setTotal((preTotal) => (preTotal -= count));
+  };
+
   return (
     <Card
       sx={{
-        width: {
+        maxWidth: {
           xs: "100%",
           sm: "50%",
           md: "50%",
           lg: "33.3%",
         },
         boxSizing: "border-box",
-        flexGrow: 1,
+        borderRadius: "5%",
+        backgroundColor: "#fafafa",
       }}
       ref={ref}
     >
@@ -60,16 +69,17 @@ const ActionCard = (
         sx={{
           display: "flex",
           alignItems: "space-between",
+          justifyContent: "center",
         }}
       >
         <Box>
           <CardActionArea onClick={handleCardAdded}>
             <img
-              style={{ height: "max(20vmax,150px)" }}
+              style={{ height: imgSize || "max(20vmax,150px)" }}
               loading="lazy"
               src={img}
               title={code}
-              alt={name}
+              alt={code}
             />
           </CardActionArea>
           <Box
@@ -81,46 +91,76 @@ const ActionCard = (
           >
             {count && (
               <>
-                <IconButton
-                  aria-label="add"
-                  onClick={handleCardAdded}
-                  size="large"
-                  sx={{ p: 0 }}
-                >
-                  <AddBoxIcon color="primary" fontSize="inherit" />
-                </IconButton>
+                <Box>
+                  <IconButton
+                    aria-label="add"
+                    onClick={handleCardAdded}
+                    size="large"
+                    sx={{ p: 0 }}
+                  >
+                    <AddOutlined color="primary" fontSize="inherit" />
+                  </IconButton>
+
+                  <IconButton
+                    aria-label="remove"
+                    onClick={handleCardRemoved}
+                    size="large"
+                    sx={{ p: 0 }}
+                  >
+                    <RemoveOutline color="error" fontSize="inherit" />
+                  </IconButton>
+                </Box>
+
                 <Typography color="secondary" variant="h6">
                   {count}
                 </Typography>
                 <IconButton
-                  aria-label="remove"
-                  onClick={handleCardRemoved}
+                  aria-label="delete"
+                  onClick={handleCardDeleted}
                   size="large"
                   sx={{ p: 0 }}
                 >
-                  <RemoveCircleOutlineIcon color="error" fontSize="inherit" />
+                  <Delete fontSize="inherit" />
                 </IconButton>
               </>
             )}
           </Box>
         </Box>
-        <CardContent
-          sx={{
-            height: {
-              md: "20vmax",
-              sm: "25ch",
-            },
-          }}
-        >
-          <Typography gutterBottom variant="h6" component="div">
-            {name}
-          </Typography>
-          {effect.split("|").map((text) => (
-            <Typography variant="body2" color="text.secondary" component="div">
-              {text}
+        {showEffect && (
+          <CardContent
+            sx={{
+              height: {
+                md: "20vmax",
+                sm: "25ch",
+              },
+            }}
+          >
+            <Typography gutterBottom variant="h6" component="div">
+              {name}
             </Typography>
-          ))}
-        </CardContent>
+            {effect ? (
+              effect.split("|").map((text, index) => (
+                <Typography
+                  key={index}
+                  variant="body2"
+                  color="text.secondary"
+                  component="div"
+                >
+                  {text}
+                </Typography>
+              ))
+            ) : (
+              <Typography
+                key={name + "unfouned"}
+                variant="body5"
+                color="primary"
+                component="div"
+              >
+                由于未知的原因，无法获取翻译效果。请找后端大佬解决！
+              </Typography>
+            )}
+          </CardContent>
+        )}
       </Box>
     </Card>
   );

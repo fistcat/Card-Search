@@ -4,6 +4,7 @@ import Card from "./Card";
 import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
 import LayersOutlined from "@mui/icons-material/LayersOutlined";
+import DeckEditor from "../dialog/DeckEditDialog";
 
 export const CardList = () => {
   const list = useList();
@@ -44,6 +45,7 @@ export const CardList = () => {
           display: "flex",
           flexWrap: "wrap",
           mx: "auto",
+          backgroundColor: "#f7f7f7",
         }}
       >
         {cards.map(({ code, ...card }, index) =>
@@ -53,31 +55,43 @@ export const CardList = () => {
               ref={lastCardElementRef}
               code={code}
               key={code}
+              showEffect={true}
               count={deck[code]}
               setDeck={setDeck}
               setTotal={setTotal}
             />
           ) : (
             <Card
+              {...card}
               key={code}
+              showEffect={true}
               code={code}
               count={deck[code]}
-              {...card}
               setDeck={setDeck}
               setTotal={setTotal}
             />
           )
         )}
       </Box>
-      <Fab
-        color="secondary"
-        aria-label="edit"
-        sx={{ position: "fixed", top: "90vh", left: "90vw", mr: 1 }}
-        variant="extended"
-      >
-        <LayersOutlined />
-        <Typography>（{total}）</Typography>
-      </Fab>
+      {total && (
+        <Fab
+          color="secondary"
+          aria-label="edit"
+          sx={{ position: "fixed", top: "90vh", left: "90vw", mr: 1 }}
+          variant="extended"
+          onClick={() => setOpen(true)}
+        >
+          <LayersOutlined />
+          <Typography>{total}</Typography>
+        </Fab>
+      )}
+      <DeckEditor
+        open={open}
+        deck={deck}
+        onClose={() => setOpen(false)}
+        setDeck={setDeck}
+        setTotal={setTotal}
+      />
     </>
   );
 };

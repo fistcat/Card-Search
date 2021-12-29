@@ -67,8 +67,6 @@ const SearchForm = () => {
         position: "sticky",
         top: "0",
         alignItems: "center",
-        border: 2,
-        borderColor: "primary.main",
       }}
     >
       {columnKeys.loading ? (
