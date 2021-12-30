@@ -1,5 +1,11 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import { Box, Fab, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Fab,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import Card from "./Card";
 import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
@@ -73,18 +79,21 @@ export const CardList = () => {
           )
         )}
       </Box>
-      {total && (
+      {loading && <LinearProgress />}
+
+      {total > 0 && (
         <Fab
           color="secondary"
           aria-label="edit"
-          sx={{ position: "fixed", top: "90vh", left: "90vw", mr: 1 }}
+          sx={{ position: "fixed", top: "90vh", left: "80vw", mr: 1 }}
           variant="extended"
           onClick={() => setOpen(true)}
         >
           <LayersOutlined />
-          <Typography>{total}</Typography>
+          {total > 0 && <Typography>{total}</Typography>}
         </Fab>
       )}
+
       <DeckEditor
         open={open}
         deck={deck}

@@ -9,6 +9,7 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import { useDebouncedEffect } from "../hooks/useDebouncedEffect";
 
@@ -70,7 +71,7 @@ const SearchForm = () => {
       }}
     >
       {columnKeys.loading ? (
-        <p>loading...</p>
+        <CircularProgress sx={{ m: "auto" }} />
       ) : columnKeys.error ? (
         <Alert severity="error"> Error occurred on fetching form details</Alert>
       ) : (
