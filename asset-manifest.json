@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Card-Search/static/css/main.e6c13ad2.css",
+    "main.js": "/Card-Search/static/js/main.2750b70b.js",
+    "static/js/787.3c2b6f52.chunk.js": "/Card-Search/static/js/787.3c2b6f52.chunk.js",
+    "index.html": "/Card-Search/index.html",
+    "main.e6c13ad2.css.map": "/Card-Search/static/css/main.e6c13ad2.css.map",
+    "main.2750b70b.js.map": "/Card-Search/static/js/main.2750b70b.js.map",
+    "787.3c2b6f52.chunk.js.map": "/Card-Search/static/js/787.3c2b6f52.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.2750b70b.js"
+  ]
+}
