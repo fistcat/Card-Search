@@ -1,11 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import {
-  Box,
-  CircularProgress,
-  Fab,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Fab, LinearProgress, Typography } from "@mui/material";
 import Card from "./Card";
 import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
@@ -25,10 +19,6 @@ export const CardList = () => {
   useEffect(() => {
     setPage(1);
   }, [list]);
-
-  useEffect(() => {
-    console.log(deck, total);
-  }, [deck, total]);
 
   const lastCardElementRef = useCallback(
     (node) => {
@@ -62,7 +52,7 @@ export const CardList = () => {
               code={code}
               key={code}
               showEffect={true}
-              count={deck[code]}
+              count={deck[code]?.count}
               setDeck={setDeck}
               setTotal={setTotal}
             />
@@ -72,7 +62,7 @@ export const CardList = () => {
               key={code}
               showEffect={true}
               code={code}
-              count={deck[code]}
+              count={deck[code]?.count}
               setDeck={setDeck}
               setTotal={setTotal}
             />

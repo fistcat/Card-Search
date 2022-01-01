@@ -14,11 +14,14 @@ import {
 import { useDebouncedEffect } from "../hooks/useDebouncedEffect";
 
 const SearchForm = () => {
+  const qs = new URLSearchParams(window.location.search);
+  const kid = qs.get("kid") || 9;
+
   const columnKeys = useSearchForm({
     method: "get",
     url: "/getKindColumn",
     params: {
-      kid: 9,
+      kid,
     },
   });
   const updateCards = useListUpdate();

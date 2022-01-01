@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function useCardSearch(query, page) {
+  const qs = new URLSearchParams(window.location.search);
+  const kid = qs.get("kid") || 9;
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [cards, setCards] = useState([]);
@@ -24,7 +27,7 @@ export default function useCardSearch(query, page) {
       params: {
         ...filteredParams,
         page,
-        kid: 9,
+        kid,
       },
       cancelToken: new axios.CancelToken((c) => (cancel = c)),
     })

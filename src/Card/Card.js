@@ -9,18 +9,36 @@ import AddOutlined from "@mui/icons-material/AddOutlined";
 import Delete from "@mui/icons-material/Delete";
 
 const ActionCard = (props, ref) => {
-  const { code, name, img, imgSize, effect, count, setDeck, setTotal } = props;
-  const showEffect = props.showEffect;
+  const {
+    code,
+    name,
+    img,
+    imgSize,
+    effect,
+    count,
+    setDeck,
+    setTotal,
+    showEffect,
+  } = props;
+
   const handleCardAdded = () => {
     setDeck((preDeck) =>
       code in preDeck
         ? {
             ...preDeck,
-            [code]: ++preDeck[code],
+            [code]: {
+              ...preDeck[code],
+              count: ++preDeck[code].count,
+            },
           }
         : {
             ...preDeck,
-            [code]: 1,
+            [code]: {
+              code,
+              name,
+              img,
+              count: 1,
+            },
           }
     );
     setTotal((preTotal) => ++preTotal);
@@ -30,21 +48,25 @@ const ActionCard = (props, ref) => {
     if (count > 1) {
       setDeck((preDeck) => ({
         ...preDeck,
-        [code]: --preDeck[code],
+        [code]: {
+          ...preDeck[code],
+          count: --preDeck[code].count,
+        },
       }));
-      setTotal((preTotal) => --preTotal);
     }
     if (count === 1) {
       setDeck((preDeck) => {
         delete preDeck[code];
         return { ...preDeck };
       });
-      setTotal((preTotal) => --preTotal);
     }
+    setTotal((preTotal) => --preTotal);
   };
 
   const handleCardDeleted = () => {
+    let count;
     setDeck((preDeck) => {
+      count = preDeck[code].count;
       delete preDeck[code];
       return { ...preDeck };
     });
@@ -76,7 +98,7 @@ const ActionCard = (props, ref) => {
         >
           <Box>
             <CardActionArea
-              onClick={handleCardAdded}
+              onClick={showEffect ? handleCardAdded : () => ({})}
               sx={{
                 transition: "all .2s ease-in-out",
                 ":hover": { transform: "scale(1.05)" },
