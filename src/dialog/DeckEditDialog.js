@@ -73,7 +73,7 @@ export default function DeckEditor(props) {
   };
 
   useEffect(() => {
-    if (!error) {
+    if (!error && response) {
       setOpenAlert(true);
     }
   }, [loading, response, error]);
@@ -115,6 +115,7 @@ export default function DeckEditor(props) {
           mx: "auto",
           minWidth: "40%",
           minHeight: "35ch",
+          alignItems: "center",
           flexGrow: 0,
         }}
       >
@@ -152,6 +153,7 @@ export default function DeckEditor(props) {
           <Card
             key={code + index}
             imgSize={"20ch"}
+            disabled={true}
             showEffect={false}
             code={code}
             setDeck={setDeck}

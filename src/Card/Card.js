@@ -11,6 +11,7 @@ import Delete from "@mui/icons-material/Delete";
 const ActionCard = (props, ref) => {
   const {
     code,
+    disabled,
     name,
     img,
     imgSize,
@@ -85,7 +86,7 @@ const ActionCard = (props, ref) => {
         >
           <Box>
             <CardActionArea
-              onClick={showEffect ? handleCardAdded : () => ({})}
+              onClick={disabled ? () => ({}) : handleCardAdded}
               sx={{
                 transition: "all .2s ease-in-out",
                 ":hover": { transform: "scale(1.05)" },
