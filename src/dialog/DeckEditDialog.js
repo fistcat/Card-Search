@@ -17,7 +17,7 @@ import { Alert, Snackbar } from "@mui/material";
 export default function DeckEditor(props) {
   const qs = new URLSearchParams(window.location.search);
   const kid = qs.get("kid") || 9;
-  const { deck, open, onClose, setDeck, setTotal } = props;
+  const { deck, open, onClose, setDeck, setTotal, imageMap } = props;
 
   const [particeDeck, setParticeDeck] = useState([]);
   const [hand, setHand] = useState([]);
@@ -27,7 +27,7 @@ export default function DeckEditor(props) {
   const formattedDeck = useMemo(() => {
     const res = [];
     for (const card in deck) {
-      for (let i = deck[card].count; i > 0; i--) res.push(deck[card]);
+      for (let i = deck[card]; i > 0; i--) res.push(card);
     }
     return res;
   }, [deck]);
@@ -118,7 +118,7 @@ export default function DeckEditor(props) {
           flexGrow: 0,
         }}
       >
-        {Object.entries(deck).map(([code, { count, img }]) => (
+        {Object.entries(deck).map(([code, count]) => (
           <Card
             key={code}
             imgSize={"31ch"}
@@ -127,7 +127,7 @@ export default function DeckEditor(props) {
             count={count}
             setDeck={setDeck}
             setTotal={setTotal}
-            img={img}
+            img={imageMap[code]}
           />
         ))}
       </DialogContent>
@@ -148,7 +148,7 @@ export default function DeckEditor(props) {
           flexGrow: 0,
         }}
       >
-        {hand.map(({ code, img }, index) => (
+        {hand.map((code, index) => (
           <Card
             key={code + index}
             imgSize={"20ch"}
@@ -156,7 +156,7 @@ export default function DeckEditor(props) {
             code={code}
             setDeck={setDeck}
             setTotal={setTotal}
-            img={img}
+            img={imageMap[code]}
           />
         ))}
       </DialogContent>

@@ -1,4 +1,10 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import { Box, Fab, LinearProgress, Typography } from "@mui/material";
 import Card from "./Card";
 import { useList } from "../ListContext";
@@ -16,10 +22,22 @@ export const CardList = () => {
 
   const observer = useRef();
 
+  const imageMap = useMemo(
+    () =>
+      cards.reduce(
+        (acc, { code, img }) => ({
+          ...acc,
+          [code]: img,
+        }),
+        {}
+      ),
+    [cards]
+  );
+
   useEffect(() => {
     setPage(1);
   }, [list]);
-
+  console.log(imageMap);
   const lastCardElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -52,7 +70,8 @@ export const CardList = () => {
               code={code}
               key={code}
               showEffect={true}
-              count={deck[code]?.count}
+              count={deck[code]}
+              img={imageMap[code]}
               setDeck={setDeck}
               setTotal={setTotal}
             />
@@ -62,7 +81,8 @@ export const CardList = () => {
               key={code}
               showEffect={true}
               code={code}
-              count={deck[code]?.count}
+              count={deck[code]}
+              img={imageMap[code]}
               setDeck={setDeck}
               setTotal={setTotal}
             />
@@ -87,6 +107,7 @@ export const CardList = () => {
       <DeckEditor
         open={open}
         deck={deck}
+        imageMap={imageMap}
         onClose={() => setOpen(false)}
         setDeck={setDeck}
         setTotal={setTotal}

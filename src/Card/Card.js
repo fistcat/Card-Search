@@ -26,19 +26,11 @@ const ActionCard = (props, ref) => {
       code in preDeck
         ? {
             ...preDeck,
-            [code]: {
-              ...preDeck[code],
-              count: ++preDeck[code].count,
-            },
+            [code]: ++preDeck[code],
           }
         : {
             ...preDeck,
-            [code]: {
-              code,
-              name,
-              img,
-              count: 1,
-            },
+            [code]: 1,
           }
     );
     setTotal((preTotal) => ++preTotal);
@@ -48,10 +40,7 @@ const ActionCard = (props, ref) => {
     if (count > 1) {
       setDeck((preDeck) => ({
         ...preDeck,
-        [code]: {
-          ...preDeck[code],
-          count: --preDeck[code].count,
-        },
+        [code]: --preDeck[code],
       }));
     }
     if (count === 1) {
@@ -64,9 +53,7 @@ const ActionCard = (props, ref) => {
   };
 
   const handleCardDeleted = () => {
-    let count;
     setDeck((preDeck) => {
-      count = preDeck[code].count;
       delete preDeck[code];
       return { ...preDeck };
     });
