@@ -43,6 +43,7 @@ export default function useCardSearch(query, page) {
         setError(true);
       });
     return () => cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, page]);
 
   return { loading, error, cards, hasMore };

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Box, Fab, LinearProgress, Typography } from "@mui/material";
+import { Alert, Box, Fab, LinearProgress, Typography } from "@mui/material";
 import Card from "./Card";
 import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
@@ -90,7 +90,7 @@ export const CardList = () => {
         )}
       </Box>
       {loading && <LinearProgress />}
-
+      {error && <Alert severity="error">{error}</Alert>}
       {total > 0 && (
         <Fab
           color="secondary"
