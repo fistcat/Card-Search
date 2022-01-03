@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://moetcg.club/Api";
-
 export const useSaveDeck = () => {
   const [response, setResponse] = useState(undefined);
   const [error, setError] = useState("");
@@ -11,9 +9,6 @@ export const useSaveDeck = () => {
   const fetchData = async (body) => {
     const bodyFromData = new FormData();
 
-    for (let key in body.deck) {
-      body.deck[key] = body.deck[key].count;
-    }
     body.deck = JSON.stringify(body.deck);
     for (let key in body) {
       bodyFromData.append(key, body[key]);

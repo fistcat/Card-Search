@@ -11,33 +11,45 @@ import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
 import LayersOutlined from "@mui/icons-material/LayersOutlined";
 import DeckEditor from "../dialog/DeckEditDialog";
+import useLoadDeck from "../hooks/useLoadDeck";
 
 export const CardList = () => {
+  const qs = new URLSearchParams(window.location.search);
+  const id = qs.get("id");
+
   const list = useList();
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [deck, setDeck] = useState({});
   const [open, setOpen] = useState(false);
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
+  const [loadDeck, imageRef] = useLoadDeck(setDeck, setTotal);
 
   const observer = useRef();
 
   const imageMap = useMemo(
     () =>
-      cards.reduce(
+      [...cards, ...imageRef].reduce(
         (acc, { code, img }) => ({
           ...acc,
           [code]: img,
         }),
         {}
       ),
-    [cards]
+    [cards, imageRef]
   );
 
   useEffect(() => {
     setPage(1);
   }, [list]);
-  console.log(imageMap);
+
+  useEffect(() => {
+    if (id) {
+      loadDeck(id);
+      setOpen(true);
+    }
+  }, [id]);
+
   const lastCardElementRef = useCallback(
     (node) => {
       if (loading) return;

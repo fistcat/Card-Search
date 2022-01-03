@@ -20,7 +20,6 @@ export const useAxios = (axiosParams) => {
   };
 
   useEffect(() => {
-    console.log("search api call");
     fetchData(axiosParams);
   }, []);
 

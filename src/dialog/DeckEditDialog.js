@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+import CopyIcon from "@mui/icons-material/CopyAllOutlined";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import Card from "../Card/Card";
@@ -17,13 +18,13 @@ import { Alert, Snackbar } from "@mui/material";
 export default function DeckEditor(props) {
   const qs = new URLSearchParams(window.location.search);
   const kid = qs.get("kid") || 9;
+
   const { deck, open, onClose, setDeck, setTotal, imageMap } = props;
 
   const [particeDeck, setParticeDeck] = useState([]);
   const [hand, setHand] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
   const [saveDeck, { response, error, loading }] = useSaveDeck();
-
   const formattedDeck = useMemo(() => {
     const res = [];
     for (const card in deck) {
@@ -98,6 +99,23 @@ export default function DeckEditor(props) {
           </Button>
         </Toolbar>
       </AppBar>
+      {response && (
+        <Alert severity="success" sx={{ justifyContent: "center" }}>
+          卡组分享地址为 {window.location.origin + "?id=" + response.data.hash}
+          <IconButton
+            color="success"
+            aria-label="copy address"
+            sx={{ p: 0 }}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                window.location.origin + "?id=" + response.data.hash
+              );
+            }}
+          >
+            <CopyIcon />
+          </IconButton>
+        </Alert>
+      )}
       <Divider sx={{ alignItems: "flex-start", pt: 2 }}>
         <Button
           variant="outlined"
@@ -162,19 +180,22 @@ export default function DeckEditor(props) {
           />
         ))}
       </DialogContent>
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={6000}
-        onClose={handleAlertClose}
-      >
-        <Alert
-          onClose={handleAlertClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          卡组成功保存!
-        </Alert>
-      </Snackbar>
+      {response && (
+        <Snackbar open={openAlert} onClose={handleAlertClose}>
+          {response.code === 1 ? (
+            <Alert onClose={handleAlertClose} severity="success">
+              卡组成功保存!
+            </Alert>
+          ) : (
+            <Alert
+              onClose={handleAlertClose}
+              severity={response.data.hash ? "warning" : "error"}
+            >
+              {response.msg}
+            </Alert>
+          )}
+        </Snackbar>
+      )}
     </Dialog>
   );
 }

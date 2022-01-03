@@ -10,6 +10,7 @@ import {
   MenuItem,
   InputLabel,
   CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import { useDebouncedEffect } from "../hooks/useDebouncedEffect";
 
@@ -54,7 +55,6 @@ const SearchForm = () => {
 
   useDebouncedEffect(
     () => {
-      console.log(isFormLoaded.current);
       if (isFormLoaded.current) {
         updateCards(values);
       }
@@ -74,7 +74,12 @@ const SearchForm = () => {
       }}
     >
       {columnKeys.loading ? (
-        <CircularProgress sx={{ m: "auto" }} />
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open
+        >
+          <CircularProgress sx={{ m: "auto" }} />
+        </Backdrop>
       ) : columnKeys.error ? (
         <Alert severity="error"> Error occurred on fetching form details</Alert>
       ) : (
