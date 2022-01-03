@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grow from "@mui/material/Grow";
-import { CardActionArea, Box, IconButton } from "@mui/material";
+import { CardActionArea, Box, IconButton, Tooltip } from "@mui/material";
 import RemoveOutline from "@mui/icons-material/RemoveOutlined";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import Delete from "@mui/icons-material/Delete";
@@ -12,10 +12,8 @@ const ActionCard = (props, ref) => {
   const {
     code,
     disabled,
-    name,
-    img,
+    cardInfo,
     imgSize,
-    effect,
     count,
     setDeck,
     setTotal,
@@ -85,23 +83,26 @@ const ActionCard = (props, ref) => {
           }}
         >
           <Box>
-            <CardActionArea
-              onClick={disabled ? () => ({}) : handleCardAdded}
-              sx={{
-                transition: "all .2s ease-in-out",
-                ":hover": { transform: "scale(1.05)" },
-              }}
-            >
-              <img
-                style={{
-                  height: imgSize || "max(20vmax,150px)",
+            <Tooltip title={!showEffect ? cardInfo.effect : ""} arrow>
+              <CardActionArea
+                onClick={disabled ? () => ({}) : handleCardAdded}
+                sx={{
+                  transition: "all .2s ease-in-out",
+                  ":hover": { transform: "scale(1.05)" },
                 }}
-                loading="lazy"
-                src={img}
-                title={code}
-                alt={code}
-              />
-            </CardActionArea>
+              >
+                <img
+                  style={{
+                    height: imgSize || "max(20vmax,150px)",
+                  }}
+                  loading="lazy"
+                  src={cardInfo.img}
+                  title={code}
+                  alt={code}
+                />
+              </CardActionArea>
+            </Tooltip>
+
             <Box
               sx={{
                 display: "flex",
@@ -111,16 +112,18 @@ const ActionCard = (props, ref) => {
             >
               {count && (
                 <>
+                  <IconButton
+                    aria-label="add"
+                    onClick={handleCardAdded}
+                    size="large"
+                    sx={{ p: 0 }}
+                  >
+                    <AddOutlined fontSize="inherit" />
+                  </IconButton>
+                  <Typography color="secondary" variant="h6" pl="10px">
+                    {count}
+                  </Typography>
                   <Box>
-                    <IconButton
-                      aria-label="add"
-                      onClick={handleCardAdded}
-                      size="large"
-                      sx={{ p: 0 }}
-                    >
-                      <AddOutlined fontSize="inherit" />
-                    </IconButton>
-
                     <IconButton
                       aria-label="remove"
                       onClick={handleCardRemoved}
@@ -129,19 +132,15 @@ const ActionCard = (props, ref) => {
                     >
                       <RemoveOutline fontSize="inherit" />
                     </IconButton>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={handleCardDeleted}
+                      size="large"
+                      sx={{ p: 0 }}
+                    >
+                      <Delete fontSize="inherit" />
+                    </IconButton>
                   </Box>
-
-                  <Typography color="secondary" variant="h6">
-                    {count}
-                  </Typography>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={handleCardDeleted}
-                    size="large"
-                    sx={{ p: 0 }}
-                  >
-                    <Delete fontSize="inherit" />
-                  </IconButton>
                 </>
               )}
             </Box>
@@ -156,10 +155,10 @@ const ActionCard = (props, ref) => {
               }}
             >
               <Typography gutterBottom variant="h6" component="div">
-                {name}
+                {cardInfo.name}
               </Typography>
-              {effect ? (
-                effect.split("|").map((text, index) => (
+              {cardInfo.effect ? (
+                cardInfo.effect.split("|").map((text, index) => (
                   <Typography
                     key={index}
                     variant="body2"
@@ -171,7 +170,7 @@ const ActionCard = (props, ref) => {
                 ))
               ) : (
                 <Typography
-                  key={name + "unfouned"}
+                  key={cardInfo.name + "unfouned"}
                   variant="body5"
                   color="primary"
                   component="div"

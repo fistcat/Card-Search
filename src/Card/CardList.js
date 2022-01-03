@@ -23,20 +23,26 @@ export const CardList = () => {
   const [deck, setDeck] = useState({});
   const [open, setOpen] = useState(false);
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
-  const [loadDeck, imageRef, deckLoading] = useLoadDeck(setDeck, setTotal);
+  const [loadDeck, loadedRef, deckLoading] = useLoadDeck(setDeck, setTotal);
 
   const observer = useRef();
 
-  const imageMap = useMemo(
+  const cardMap = useMemo(
     () =>
-      [...cards, ...imageRef].reduce(
-        (acc, { code, img }) => ({
+      [...loadedRef, ...cards].reduce(
+        (acc, { code, img, effect, name, cid }) => ({
           ...acc,
-          [code]: img,
+          [code]: {
+            code,
+            cid,
+            img,
+            effect,
+            name,
+          },
         }),
         {}
       ),
-    [cards, imageRef]
+    [cards, loadedRef]
   );
 
   useEffect(() => {
@@ -83,7 +89,7 @@ export const CardList = () => {
               key={code}
               showEffect={true}
               count={deck[code]}
-              img={imageMap[code]}
+              cardInfo={cardMap[code]}
               setDeck={setDeck}
               setTotal={setTotal}
             />
@@ -94,7 +100,7 @@ export const CardList = () => {
               showEffect={true}
               code={code}
               count={deck[code]}
-              img={imageMap[code]}
+              cardInfo={cardMap[code]}
               setDeck={setDeck}
               setTotal={setTotal}
             />
@@ -120,7 +126,7 @@ export const CardList = () => {
         open={open}
         deck={deck}
         deckLoading={deckLoading}
-        imageMap={imageMap}
+        cardMap={cardMap}
         onClose={() => setOpen(false)}
         setDeck={setDeck}
         setTotal={setTotal}

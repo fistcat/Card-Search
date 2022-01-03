@@ -20,7 +20,7 @@ export default function DeckEditor(props) {
   const qs = new URLSearchParams(window.location.search);
   const kid = qs.get("kid") || 9;
 
-  const { deck, deckLoading, open, onClose, setDeck, setTotal, imageMap } =
+  const { deck, deckLoading, open, onClose, setDeck, setTotal, cardMap } =
     props;
 
   const [particeDeck, setParticeDeck] = useState([]);
@@ -149,13 +149,13 @@ export default function DeckEditor(props) {
           Object.entries(deck).map(([code, count]) => (
             <Card
               key={code}
-              imgSize={"31ch"}
+              imgSize={"32ch"}
               showEffect={false}
               code={code}
               count={count}
               setDeck={setDeck}
               setTotal={setTotal}
-              img={imageMap[code]}
+              cardInfo={cardMap[code]}
             />
           ))
         )}
@@ -186,7 +186,7 @@ export default function DeckEditor(props) {
             code={code}
             setDeck={setDeck}
             setTotal={setTotal}
-            img={imageMap[code]}
+            cardInfo={cardMap[code]}
           />
         ))}
       </DialogContent>

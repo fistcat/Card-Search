@@ -4,7 +4,7 @@ import axios from "axios";
 export const useLoadDeck = (setDeck, setTotal) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [imageRef, setImageRef] = useState([]);
+  const [loadedRef, setLoadedRef] = useState([]);
 
   const fetchData = async (id) => {
     try {
@@ -23,12 +23,7 @@ export const useLoadDeck = (setDeck, setTotal) => {
             };
           }, {});
         });
-        setImageRef(() => {
-          return result.data.data.map(({ code, img }) => ({
-            code,
-            img,
-          }));
-        });
+        setLoadedRef(() => result.data.data);
         setTotal(() => result.data.data.reduce((acc, { num }) => acc + num, 0));
       }
     } catch (error) {
@@ -38,7 +33,7 @@ export const useLoadDeck = (setDeck, setTotal) => {
     }
   };
 
-  return [fetchData, imageRef, loading];
+  return [fetchData, loadedRef, loading];
 };
 
 export default useLoadDeck;
