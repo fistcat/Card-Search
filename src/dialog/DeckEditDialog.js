@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Divider from "@mui/material/Divider";
@@ -19,7 +20,8 @@ export default function DeckEditor(props) {
   const qs = new URLSearchParams(window.location.search);
   const kid = qs.get("kid") || 9;
 
-  const { deck, open, onClose, setDeck, setTotal, imageMap } = props;
+  const { deck, deckLoading, open, onClose, setDeck, setTotal, imageMap } =
+    props;
 
   const [particeDeck, setParticeDeck] = useState([]);
   const [hand, setHand] = useState([]);
@@ -78,7 +80,7 @@ export default function DeckEditor(props) {
       setOpenAlert(true);
     }
   }, [loading, response, error]);
-
+  console.log(window.location);
   return (
     <Dialog open={open} onClose={onClose} fullScreen>
       <AppBar sx={{ position: "relative" }}>
@@ -101,7 +103,11 @@ export default function DeckEditor(props) {
       </AppBar>
       {response && (
         <Alert severity="success" sx={{ justifyContent: "center" }}>
-          卡组分享地址为 {window.location.origin + "?id=" + response.data.hash}
+          卡组分享地址为{" "}
+          {window.location.origin +
+            window.location.pathname +
+            "?id=" +
+            response.data.hash}
           <IconButton
             color="success"
             aria-label="copy address"
@@ -137,18 +143,22 @@ export default function DeckEditor(props) {
           flexGrow: 0,
         }}
       >
-        {Object.entries(deck).map(([code, count]) => (
-          <Card
-            key={code}
-            imgSize={"31ch"}
-            showEffect={false}
-            code={code}
-            count={count}
-            setDeck={setDeck}
-            setTotal={setTotal}
-            img={imageMap[code]}
-          />
-        ))}
+        {deckLoading && deck.length === 0 ? (
+          <CircularProgress sx={{ mx: "auto" }} />
+        ) : (
+          Object.entries(deck).map(([code, count]) => (
+            <Card
+              key={code}
+              imgSize={"31ch"}
+              showEffect={false}
+              code={code}
+              count={count}
+              setDeck={setDeck}
+              setTotal={setTotal}
+              img={imageMap[code]}
+            />
+          ))
+        )}
       </DialogContent>
       <Divider sx={{ alignItems: "flex-start" }}>
         <Button variant="contained" onClick={handleInitialDraw} sx={{ mr: 1 }}>

@@ -23,7 +23,7 @@ export const CardList = () => {
   const [deck, setDeck] = useState({});
   const [open, setOpen] = useState(false);
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
-  const [loadDeck, imageRef] = useLoadDeck(setDeck, setTotal);
+  const [loadDeck, imageRef, deckLoading] = useLoadDeck(setDeck, setTotal);
 
   const observer = useRef();
 
@@ -119,6 +119,7 @@ export const CardList = () => {
       <DeckEditor
         open={open}
         deck={deck}
+        deckLoading={deckLoading}
         imageMap={imageMap}
         onClose={() => setOpen(false)}
         setDeck={setDeck}

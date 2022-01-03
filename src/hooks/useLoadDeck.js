@@ -37,7 +37,7 @@ export const useLoadDeck = (setDeck, setTotal) => {
     }
   };
 
-  return [fetchData, imageRef];
+  return [fetchData, imageRef, loading];
 };
 
 export default useLoadDeck;
