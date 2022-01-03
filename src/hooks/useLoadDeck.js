@@ -3,11 +3,12 @@ import axios from "axios";
 
 export const useLoadDeck = (setDeck, setTotal) => {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [imageRef, setImageRef] = useState([]);
 
   const fetchData = async (id) => {
     try {
+      setLoading(true);
       const result = await axios.get("https://moetcg.club/Api/showDeck", {
         params: {
           id,

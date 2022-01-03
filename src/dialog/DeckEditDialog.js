@@ -80,7 +80,7 @@ export default function DeckEditor(props) {
       setOpenAlert(true);
     }
   }, [loading, response, error]);
-  console.log(window.location);
+
   return (
     <Dialog open={open} onClose={onClose} fullScreen>
       <AppBar sx={{ position: "relative" }}>
@@ -101,7 +101,7 @@ export default function DeckEditor(props) {
           </Button>
         </Toolbar>
       </AppBar>
-      {response && (
+      {response?.data?.hash && (
         <Alert severity="success" sx={{ justifyContent: "center" }}>
           卡组分享地址为{" "}
           {window.location.origin +
@@ -143,7 +143,7 @@ export default function DeckEditor(props) {
           flexGrow: 0,
         }}
       >
-        {deckLoading && deck.length === 0 ? (
+        {deckLoading ? (
           <CircularProgress sx={{ mx: "auto" }} />
         ) : (
           Object.entries(deck).map(([code, count]) => (
