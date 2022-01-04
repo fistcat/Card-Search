@@ -114,7 +114,10 @@ export default function DeckEditor(props) {
             sx={{ p: 0 }}
             onClick={() => {
               navigator.clipboard.writeText(
-                window.location.origin + "?id=" + response.data.hash
+                window.location.origin +
+                  window.location.pathname +
+                  "?id=" +
+                  response.data.hash
               );
             }}
           >
