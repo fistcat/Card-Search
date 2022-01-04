@@ -107,7 +107,9 @@ export default function DeckEditor(props) {
           {window.location.origin +
             window.location.pathname +
             "?id=" +
-            response.data.hash}
+            response.data.hash +
+            "&kid=" +
+            response.data.kid}
           <IconButton
             color="success"
             aria-label="copy address"
@@ -117,7 +119,9 @@ export default function DeckEditor(props) {
                 window.location.origin +
                   window.location.pathname +
                   "?id=" +
-                  response.data.hash
+                  response.data.hash +
+                  "&kid=" +
+                  response.data.kid
               );
             }}
           >
