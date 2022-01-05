@@ -92,41 +92,45 @@ export const CardList = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          mx: "auto",
-          backgroundColor: "#f7f7f7",
-        }}
-      >
-        {cards.map(({ code, ...card }, index) =>
-          cards.length === index + 1 ? (
-            <Card
-              {...card}
-              ref={lastCardElementRef}
-              code={code}
-              key={code}
-              showEffect={true}
-              count={deck[code]}
-              cardInfo={cardMap[code]}
-              setDeck={setDeck}
-              setTotal={setTotal}
-            />
-          ) : (
-            <Card
-              {...card}
-              key={code}
-              showEffect={true}
-              code={code}
-              count={deck[code]}
-              cardInfo={cardMap[code]}
-              setDeck={setDeck}
-              setTotal={setTotal}
-            />
-          )
-        )}
-      </Box>
+      {cards.length > 0 ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            mx: "auto",
+            backgroundColor: "#f7f7f7",
+          }}
+        >
+          {cards.map(({ code, ...card }, index) =>
+            cards.length === index + 1 ? (
+              <Card
+                {...card}
+                ref={lastCardElementRef}
+                code={code}
+                key={code}
+                showEffect={true}
+                count={deck[code]}
+                cardInfo={cardMap[code]}
+                setDeck={setDeck}
+                setTotal={setTotal}
+              />
+            ) : (
+              <Card
+                {...card}
+                key={code}
+                showEffect={true}
+                code={code}
+                count={deck[code]}
+                cardInfo={cardMap[code]}
+                setDeck={setDeck}
+                setTotal={setTotal}
+              />
+            )
+          )}
+        </Box>
+      ) : (
+        !loading && <Alert severity="warning">没有对应的搜索结果</Alert>
+      )}
       {loading && <LinearProgress />}
       {error && <Alert severity="error">{error}</Alert>}
       {total > 0 && (

@@ -157,7 +157,7 @@ const ActionCard = (props, ref) => {
               <Typography gutterBottom variant="h6" component="div">
                 {cardInfo.name}
               </Typography>
-              {cardInfo.effect ? (
+              {cardInfo?.effect ? (
                 cardInfo.effect.split("|").map((text, index) => (
                   <Typography
                     key={index}

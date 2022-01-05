@@ -9,8 +9,9 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-import CopyIcon from "@mui/icons-material/CopyAllOutlined";
+import CopyIcon from "@mui/icons-material/FileCopyOutlined";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
 import Card from "../Card/Card";
 import useSaveDeck from "../hooks/useSaveDeck";
@@ -97,7 +98,10 @@ export default function DeckEditor(props) {
             卡组编辑
           </Typography>
           <Button autoFocus color="inherit" onClick={handleSaveDeck}>
-            保存
+            <Typography variant="h6" component="div">
+              保存
+            </Typography>
+            <SaveAltOutlinedIcon sx={{ pl: 1 }} />
           </Button>
         </Toolbar>
       </AppBar>
