@@ -22,28 +22,27 @@ export const CardList = () => {
   const [total, setTotal] = useState(0);
   const [deck, setDeck] = useState({});
   const [open, setOpen] = useState(false);
+  const cardRefs = useRef({});
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
   const [loadDeck, loadedRef, deckLoading] = useLoadDeck(setDeck, setTotal);
 
   const observer = useRef();
 
-  const cardMap = useMemo(
-    () =>
-      [...loadedRef, ...cards].reduce(
-        (acc, { code, img, effect, name, cid }) => ({
-          ...acc,
-          [code]: {
-            code,
-            cid,
-            img,
-            effect,
-            name,
-          },
-        }),
-        {}
-      ),
-    [cards, loadedRef]
-  );
+  const cardMap = useMemo(() => {
+    return [...loadedRef, ...cards].reduce(
+      (acc, { code, img, effect, name, cid }) => ({
+        ...acc,
+        [code]: {
+          code,
+          cid,
+          img,
+          effect,
+          name,
+        },
+      }),
+      {}
+    );
+  }, [cards, loadedRef]);
 
   useEffect(() => {
     setPage(1);
@@ -55,6 +54,27 @@ export const CardList = () => {
       setOpen(true);
     }
   }, [id]);
+
+  useEffect(() => {
+    cardRefs.current = {
+      ...[...loadedRef, ...cards].reduce(
+        (acc, { code, img, effect, name, cid }) =>
+          acc[code]
+            ? acc
+            : {
+                ...acc,
+                [code]: {
+                  code,
+                  cid,
+                  img,
+                  effect,
+                  name,
+                },
+              },
+        cardRefs.current
+      ),
+    };
+  }, [loadedRef, cards]);
 
   const lastCardElementRef = useCallback(
     (node) => {
@@ -126,7 +146,7 @@ export const CardList = () => {
         open={open}
         deck={deck}
         deckLoading={deckLoading}
-        cardMap={cardMap}
+        cardMap={cardRefs.current}
         onClose={() => setOpen(false)}
         setDeck={setDeck}
         setTotal={setTotal}

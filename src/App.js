@@ -7,8 +7,6 @@ import Box from "@mui/material/Box";
 import { ListProvider } from "./ListContext";
 
 function App() {
-  const cnzz_protocol =
-    "https:" == document.location.protocol ? "https://" : "http://";
   useEffect(() => {
     document.title = "萌卡社在线Lycee/WS中文组卡器";
   }, []);

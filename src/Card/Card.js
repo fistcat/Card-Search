@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, memo } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -83,7 +83,7 @@ const ActionCard = (props, ref) => {
           }}
         >
           <Box>
-            <Tooltip title={!showEffect ? cardInfo.effect : ""} arrow>
+            <Tooltip title={!showEffect ? cardInfo?.effect : ""} arrow>
               <CardActionArea
                 onClick={disabled ? () => ({}) : handleCardAdded}
                 sx={{
@@ -185,4 +185,4 @@ const ActionCard = (props, ref) => {
     </Grow>
   );
 };
-export default forwardRef(ActionCard);
+export default memo(forwardRef(ActionCard));
