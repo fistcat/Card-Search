@@ -5,12 +5,21 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Alert, Box, Fab, LinearProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Backdrop,
+  Box,
+  Fab,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import Card from "./Card";
 import { useList } from "../ListContext";
 import useCardSearch from "../hooks/useCardSearch";
 import LayersOutlined from "@mui/icons-material/LayersOutlined";
+import ListIcon from "@mui/icons-material/ListOutlined";
 import DeckEditor from "../dialog/DeckEditDialog";
+import { DeckStroage } from "../dialog/DeckStroage";
 import useLoadDeck from "../hooks/useLoadDeck";
 
 export const CardList = () => {
@@ -21,7 +30,8 @@ export const CardList = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [deck, setDeck] = useState({});
-  const [open, setOpen] = useState(false);
+  const [openDeckEditor, setOpenDeckEditor] = useState(false);
+  const [openDeckStore, setOpenDeckStore] = useState(false);
   const cardRefs = useRef({});
   const { cards, hasMore, loading, error } = useCardSearch(list, page);
   const [loadDeck, loadedRef, deckLoading] = useLoadDeck(setDeck, setTotal);
@@ -51,7 +61,7 @@ export const CardList = () => {
   useEffect(() => {
     if (id) {
       loadDeck(id);
-      setOpen(true);
+      setOpenDeckEditor(true);
     }
   }, [id]);
 
@@ -92,6 +102,10 @@ export const CardList = () => {
 
   return (
     <>
+      <Backdrop
+        open={deckLoading}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      />
       {cards.length > 0 ? (
         <Box
           sx={{
@@ -137,23 +151,38 @@ export const CardList = () => {
         <Fab
           color="secondary"
           aria-label="edit"
-          sx={{ position: "fixed", top: "90vh", left: "80vw", mr: 1 }}
+          sx={{ position: "fixed", top: "90vh", right: "0vw" }}
           variant="extended"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenDeckEditor(true)}
         >
           <LayersOutlined />
           {total > 0 && <Typography>{total}</Typography>}
         </Fab>
       )}
-
       <DeckEditor
-        open={open}
+        open={openDeckEditor}
         deck={deck}
         deckLoading={deckLoading}
         cardMap={cardRefs.current}
-        onClose={() => setOpen(false)}
+        onClose={() => setOpenDeckEditor(false)}
         setDeck={setDeck}
         setTotal={setTotal}
+      />
+      {localStorage.getItem("decks") && (
+        <Fab
+          color="primary"
+          aria-label="edit"
+          sx={{ position: "fixed", top: "0vh", right: "0vw" }}
+          variant="extended"
+          onClick={() => setOpenDeckStore(true)}
+        >
+          <ListIcon />
+        </Fab>
+      )}
+      <DeckStroage
+        open={openDeckStore}
+        onClose={() => setOpenDeckStore(false)}
+        loadDeck={loadDeck}
       />
     </>
   );

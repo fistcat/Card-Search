@@ -1,14 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import { saveToLocalStorage } from "../helper";
 
 export const useSaveDeck = () => {
   const [response, setResponse] = useState(undefined);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async (body) => {
+  const fetchData = async ({ deckName, ...body }) => {
     const bodyFromData = new FormData();
-
     body.deck = JSON.stringify(body.deck);
     for (let key in body) {
       bodyFromData.append(key, body[key]);
@@ -23,6 +23,10 @@ export const useSaveDeck = () => {
         }
       );
       setResponse(result.data);
+      saveToLocalStorage({
+        ...result.data.data,
+        deckName: deckName ? deckName : result.data.data.hash,
+      });
     } catch (error) {
       setError(error);
     } finally {

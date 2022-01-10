@@ -9,6 +9,7 @@ export const useLoadDeck = (setDeck, setTotal) => {
   const fetchData = async (id) => {
     try {
       setLoading(true);
+      debugger;
       const result = await axios.get("https://moetcg.club/Api/showDeck", {
         params: {
           id,

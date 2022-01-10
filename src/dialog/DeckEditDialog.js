@@ -15,7 +15,7 @@ import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
 import Card from "../Card/Card";
 import useSaveDeck from "../hooks/useSaveDeck";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Snackbar, TextField } from "@mui/material";
 
 export default function DeckEditor(props) {
   const qs = new URLSearchParams(window.location.search);
@@ -25,7 +25,9 @@ export default function DeckEditor(props) {
     props;
 
   const [particeDeck, setParticeDeck] = useState([]);
+  const [deckLoaded, setDeckLoaded] = useState(false);
   const [hand, setHand] = useState([]);
+  const [deckName, setDeckName] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [saveDeck, { response, error, loading }] = useSaveDeck();
   const formattedDeck = useMemo(() => {
@@ -68,12 +70,19 @@ export default function DeckEditor(props) {
   const handleSaveDeck = () => {
     saveDeck({
       deck: { ...deck },
+      deckName,
       kid,
     });
+    setDeckLoaded(true);
   };
 
   const handleAlertClose = () => {
     setOpenAlert(false);
+  };
+
+  const handleClose = () => {
+    setDeckLoaded(false);
+    onClose();
   };
 
   useEffect(() => {
@@ -83,13 +92,13 @@ export default function DeckEditor(props) {
   }, [loading, response, error]);
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen>
+    <Dialog open={open} onClose={handleClose} fullScreen>
       <AppBar sx={{ position: "relative" }}>
         <Toolbar>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="close"
           >
             <CloseIcon />
@@ -105,7 +114,7 @@ export default function DeckEditor(props) {
           </Button>
         </Toolbar>
       </AppBar>
-      {response?.data?.hash && (
+      {response?.data?.hash && deckLoaded && (
         <Alert severity="success" sx={{ justifyContent: "center" }}>
           卡组分享地址为{" "}
           {window.location.origin +
@@ -133,6 +142,14 @@ export default function DeckEditor(props) {
           </IconButton>
         </Alert>
       )}
+      <TextField
+        label="输入卡组名称"
+        id="deckName"
+        variant="filled"
+        size="small"
+        onChange={(e) => setDeckName(e.target.value)}
+      />
+
       <Divider sx={{ alignItems: "flex-start", pt: 2 }}>
         <Button
           variant="outlined"

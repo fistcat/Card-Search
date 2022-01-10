@@ -1,7 +1,7 @@
 {
   "homepage": "https://fistcat.github.io/Card-Search",
   "name": "card-search",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "latest",
