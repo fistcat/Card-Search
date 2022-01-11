@@ -181,6 +181,7 @@ export const CardList = () => {
       )}
       <DeckStroage
         open={openDeckStore}
+        openEditor={setOpenDeckEditor}
         onClose={() => setOpenDeckStore(false)}
         loadDeck={loadDeck}
       />

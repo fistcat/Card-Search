@@ -10,8 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import CopyIcon from "@mui/icons-material/FileCopyOutlined";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import SaveAltOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 
 import Card from "../Card/Card";
 import useSaveDeck from "../hooks/useSaveDeck";
@@ -116,29 +117,32 @@ export default function DeckEditor(props) {
       </AppBar>
       {response?.data?.hash && deckLoaded && (
         <Alert severity="success" sx={{ justifyContent: "center" }}>
-          卡组分享地址为{" "}
-          {window.location.origin +
-            window.location.pathname +
-            "?id=" +
-            response.data.hash +
-            "&kid=" +
-            response.data.kid}
+          {`卡组分享地址为 ${window.location.origin}${window.location.pathname}"?id="${response.data.hash}"&kid="${response.data.kid}`}
           <IconButton
             color="success"
             aria-label="copy address"
+            title="分享卡组"
             sx={{ p: 0 }}
             onClick={() => {
               navigator.clipboard.writeText(
-                window.location.origin +
-                  window.location.pathname +
-                  "?id=" +
-                  response.data.hash +
-                  "&kid=" +
-                  response.data.kid
+                `${window.location.origin}${window.location.pathname}"?id="${response.data.hash}"&kid="${response.data.kid}`
               );
             }}
           >
             <CopyIcon />
+          </IconButton>
+          <IconButton
+            color="success"
+            aria-label="download tts"
+            title="下载TTS文件"
+            sx={{ p: 0 }}
+            onClick={() => {
+              window.open(
+                `https://moetcg.club/Api/outTts?id=${response.data.hash}`
+              );
+            }}
+          >
+            <FileDownloadIcon />
           </IconButton>
         </Alert>
       )}
@@ -149,17 +153,6 @@ export default function DeckEditor(props) {
         size="small"
         onChange={(e) => setDeckName(e.target.value)}
       />
-
-      <Divider sx={{ alignItems: "flex-start", pt: 2 }}>
-        <Button
-          variant="outlined"
-          onClick={handleDeleteDeck}
-          color="error"
-          startIcon={<DeleteForeverIcon />}
-        >
-          删除卡组 {formattedDeck.length}
-        </Button>
-      </Divider>
       <DialogContent
         sx={{
           display: "flex",
@@ -169,6 +162,8 @@ export default function DeckEditor(props) {
           minHeight: "35ch",
           alignItems: "center",
           flexGrow: 0,
+          p: 0,
+          pl: 4,
         }}
       >
         {deckLoading ? (
@@ -189,6 +184,15 @@ export default function DeckEditor(props) {
         )}
       </DialogContent>
       <Divider sx={{ alignItems: "flex-start" }}>
+        <Button
+          variant="outlined"
+          onClick={handleDeleteDeck}
+          color="error"
+          startIcon={<DeleteForeverIcon />}
+          sx={{ mr: 5 }}
+        >
+          删除卡组 {formattedDeck.length}
+        </Button>
         <Button variant="contained" onClick={handleInitialDraw} sx={{ mr: 1 }}>
           起始手牌
         </Button>

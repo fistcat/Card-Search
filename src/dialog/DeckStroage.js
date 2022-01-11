@@ -7,11 +7,11 @@ import {
   ListItemText,
   IconButton,
 } from "@mui/material";
-import { DeleteOutline, FileUpload } from "@mui/icons-material";
+import { DeleteOutline, FileDownload } from "@mui/icons-material";
 import { deleteFromLocalStorage } from "../helper";
 import { Box } from "@mui/system";
 
-export const DeckStroage = ({ open, onClose, loadDeck }) => {
+export const DeckStroage = ({ open, onClose, loadDeck, openEditor }) => {
   const [decks, setDecks] = useState({});
 
   const handleDeckDelete = (deckName) => {
@@ -21,6 +21,11 @@ export const DeckStroage = ({ open, onClose, loadDeck }) => {
       delete newDecks[deckName];
       return newDecks;
     });
+  };
+
+  const handleLoadDeck = (hash) => {
+    openEditor(true);
+    loadDeck(hash);
   };
 
   const handleExportTts = (hash) => {
@@ -49,7 +54,7 @@ export const DeckStroage = ({ open, onClose, loadDeck }) => {
                       size="small"
                       onClick={() => handleExportTts(hash)}
                     >
-                      <FileUpload color="primary" />
+                      <FileDownload color="primary" />
                     </IconButton>
                     <IconButton
                       edge="end"
@@ -66,7 +71,7 @@ export const DeckStroage = ({ open, onClose, loadDeck }) => {
                 <ListItemText
                   sx={{ pr: 5 }}
                   primary={deckName}
-                  onClick={() => loadDeck(hash)}
+                  onClick={() => handleLoadDeck(hash)}
                 />
               </ListItem>
             ))}
